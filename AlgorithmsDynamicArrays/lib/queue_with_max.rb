@@ -32,11 +32,9 @@ class QueueWithMax
 
   def max
     greatest = nil
-    temp = @store
-    @length.times do
-      last = temp.pop
-      if greatest == nil || last > greatest
-        greatest = last
+    (0...@length).each do |idx|
+      if greatest == nil || @store[idx] > greatest
+        greatest = @store[idx]
       end
     end
     greatest
