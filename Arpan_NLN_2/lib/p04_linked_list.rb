@@ -19,13 +19,15 @@ class Node
 end
 
 class LinkedList
+  include Enumerable
+  
   def initialize
     @head = Node.new
     @tail = Node.new
     @head.next = @tail
-    @head.prev = @tail
-    @tail.next = @head
     @tail.prev = @head
+    @first = @head
+    @last = @tail
   end
 
   def [](i)
@@ -38,28 +40,62 @@ class LinkedList
   end
 
   def last
-    @tail.prev
+    @last.prev
   end
 
   def empty?
+    @tail.prev == @head
   end
 
   def get(key)
+    crawler = @head.next
+    until crawler == @tail
+      return crawler.val if crawler.key == key
+      crawler = crawler.next
+    end
+    nil
+  end
+
+  def fetchNode(key)
+    crawler = @head.next
+    until crawler == @tail
+      return crawler if crawler.key == key
+      crawler = crawler.next
+    end
+    nil
   end
 
   def include?(key)
+    get(key) ? true : false
   end
 
   def append(key, val)
+    insert = Node.new(key, val)
+    insert.next = @tail
+    insert.prev = @tail.prev
+    @tail.prev.next = insert
+    @tail.prev = insert
   end
 
   def update(key, val)
+    updated = fetchNode(key)
+    return nil unless updated
+    updated.val = val
   end
 
   def remove(key)
+    target = fetchNode(key)
+    target.prev.next = target.next
+    target.next.prev = target.prev
   end
 
-  def each
+  def each(&prc)
+    crawler = @head.next
+    until crawler == @tail
+      prc.call(crawler)
+      crawler = crawler.next
+    end
+
   end
 
   # uncomment when you have `each` working and `Enumerable` included
