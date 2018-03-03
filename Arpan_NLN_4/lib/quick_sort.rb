@@ -43,7 +43,9 @@ class QuickSort
       next if prc.call(array[start], array[idx]) <= 0
       array[part], array[idx] = array[idx], array[part]
       part += 1
+      p array
     end
+
 
     pivot = part - 1
     array[start], array[pivot] = array[pivot], array[start]
