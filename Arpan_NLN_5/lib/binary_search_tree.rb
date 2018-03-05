@@ -29,8 +29,11 @@ class BinarySearchTree
   end
 
   def delete(value)
-    return nil unless @root
-    @root.class.delete!(parent = @root, value)
+    if @root.value == value && @root.right == nil && @root.left == nil
+      @root = nil
+      return
+    end
+    self.class.delete!(@root, value)
 
   end
 
@@ -76,20 +79,52 @@ class BinarySearchTree
     node
   end
 
-  def self.delete!(parent_pointer, value)
-    if (self.value != value && self.left)
-      parent_pointer = self
-      self.left.delete!(parent_pointer, value)
-      
+  def self.find_max(node)
+    return nil unless node
+    return node if node.right == nil
+    find_max(node.right)
+  end
 
-    if (self.value == value && self.left == nil && self.right == nil)
-      parent_pointer
+  def self.delete_max!(node)
+    return nil unless node
+    return node.left unless node.right
 
-    elsif (self.value == value && self.left != nil)
+    node.right = delete_max!(node.right)
+    node
+  end
 
-    elsif (self.value == value && self.right != nil)
 
+  def self.delete!(node, value)
+    # if (child.value != value && child.left && value < child.value)
+    #   parent_pointer = child.left
+    #   delete!(parent_pointer, , value)
+    # elsif (child.value != value && child.right && value > child.value)
+    #   parent_pointer = child.right
+    #   child.right.delete!(parent_pointer, value)
+    # elsif (child.value == value && child.left == nil && child.right == nil)
+    #   parent_pointer = nil
+    # elsif (child.value == value && child.left != nil)
+    #   parent = child
+    # elsif (child.value == value && child.right != nil)
+    #   parent = child
+    # end
+    return nil unless node
 
+    if (node.value == value)
+      return node.right unless node.left
+      return node.left unless node.right
+
+      move = find_max(node.left) #find max node on left subtree and delete this node after pulling its info
+      move.left = delete_max!(node.left)
+      move.right = node.right
+      return move
+    elsif value < node.value
+      node.left = delete!(node.left, value)
+    else
+      node.right = delete!(node.right, value)
+    end
+
+    node
 
   end
 end
