@@ -13,7 +13,7 @@ def topological_sort(vertices)
     end
     degrees[vertex] = vertex.in_edges.count
   end
-
+  p degrees.values
   until queue.empty?
     current = queue.pop
     current.out_edges.each do |edge|
