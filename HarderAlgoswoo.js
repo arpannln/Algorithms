@@ -34,3 +34,10 @@ var node11 = {value: 11, next: node4};
 var node10 = {value: 10, next: node11};
 var node9 = {value: 9, next: node10};
 var node8 = {value: 8, next: node9};
+
+//test cases
+intersectingLists(node1, node8); // should produce value 4
+
+intersectingLists(node1, node2); // should produce value 2
+
+intersectingLists(node1, node10); // should produce null
