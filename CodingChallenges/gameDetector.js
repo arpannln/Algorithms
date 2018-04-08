@@ -36,34 +36,35 @@
 // Super naive approach:
 
   function gameDetector (grams, sentences) {
-    //create our reverse hash
     var gameID = {};
     for (let key in grams) {
       grams[key].forEach( (gram) => gameID[gram] = key)
     }
-
+    var result = [];
     sentences.map ( (sentence) =>
       {
         var words = sentence.split(" ");
         var changed = "";
         for (let i = 0; i < words.length; i++ ) {
           var phrase = words[i];
-          for (let j = i + 1; j < words.length; j++) {
-            phrase += words[j];
+          for (let j = i + 1; j < words.length+1; j++) {
+            console.log(phrase);
             if (gameID[phrase]) {
+              console.log(taggify(gameID[phrase], phrase));
               words.splice(i, j - i, taggify(gameID[phrase], phrase));
             }
+            phrase += " " + words[j];
           }
         }
-        words.join(" ");
+        result.push(words.join(" "));
       }
 
     );
-
+    return result;
   }
 
   function taggify (gameID, ngram) {
     return `TAG{${gameID},${ngram}}`;
   }
 
-  export {gameDetector, taggify};
+  module.exports.gameDetector = gameDetector;

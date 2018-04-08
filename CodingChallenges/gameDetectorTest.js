@@ -1,4 +1,4 @@
-import {gameDetector, taggify} from './gameDetector.js';
+const GAMER = require('./gameDetector.js');
 
 var grams =
   {
@@ -14,4 +14,7 @@ var sentences =
    "Lol, no comment about that",
    "I'm still playing world of warcraft since ww2"];
 
-gameDetector(grams, sentences);
+console.log(GAMER.gameDetector(grams, sentences));
+
+//issues while debugging :
+// need to take care of punctuation
