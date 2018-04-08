@@ -26,7 +26,7 @@
 
 // Problem-simplified: need to parse through all the strings in the array and "discover"
 // any n-grams (does letter case count?) and then replace the n-gram with the respective gameID as well as the
-// trigger n-gram.
+// trigger n-gram. (what if different n-grams overlap with each other?)
 
 // Initial-solution-plan:
 //    Create a reverse hash from the n-grams which would point to gameId
@@ -37,20 +37,33 @@
 
   function gameDetector (grams, sentences) {
     //create our reverse hash
-    var reverse = {};
+    var gameID = {};
     for (let key in grams) {
-      grams[key].forEach( (gram) => reverse[gram] = key)
+      grams[key].forEach( (gram) => gameID[gram] = key)
     }
 
-    sentences.forEach ( (sentence) =>
+    sentences.map ( (sentence) =>
       {
-        sentenc
+        var words = sentence.split(" ");
+        var changed = "";
+        for (let i = 0; i < words.length; i++ ) {
+          var phrase = words[i];
+          for (let j = i + 1; j < words.length; j++) {
+            phrase += words[j];
+            if (gameID[phrase]) {
+              words.splice(i, j - i, taggify(gameID[phrase], phrase));
+            }
+          }
+        }
+        words.join(" ");
       }
 
-    )
+    );
 
   }
 
   function taggify (gameID, ngram) {
     return `TAG{${gameID},${ngram}}`;
   }
+
+  export {gameDetector, taggify};
