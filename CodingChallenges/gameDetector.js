@@ -15,10 +15,11 @@
         // ...,
         // "I'm still playing world of warcraft since ww2"]
 //output -
-{
-"CallOfDutyWW2": ["Call of duty world war two", "COD WW2", "COD WWII","WW2COD"],
-"Fortnite": ["Fortnite", "Fort Nite"],
-"Destiny": ["Destiny", "original Destiny game"],
-"Destiny2": ["Destiny 2", "the last Destiny game", "Destiny II"],
-"WorldOfWarcraft": ["WoW the game", "world of warcraft"],
-}
+        // ["I liked TAG{Destiny2,the last Destiny game}, now I play TAG{Fortnite,Fortnite}",
+        // "Lol, no comment about that",
+        // ...,
+        // "I'm still playing TAG{WorldOfWarcraft,world of warcraft} since ww2"]
+
+
+// “CallOfDutyWW2”, must be represented in the final text as TAG{GameID,original
+// text}, e.g. TAG{CallOfDutyWW2,Call of Duty world war two}.
