@@ -37,11 +37,8 @@
 
 
   function gameDetector (grams, sentences) {
-    var gameID = {};
     // make our reverse hash for quick lookup (tailored to be case insensitive)
-    for (let key in grams) {
-      grams[key].forEach( (gram) => gameID[gram.toLowerCase()] = key)
-    }
+    var gameID = ngramToGameID(grams);
     var result = [];
     // go through our sentences and split them into words and check all the different combinations
     // for our n-grams
@@ -68,6 +65,14 @@
 
     );
     return result;
+  }
+
+  function ngramToGameID (grams) {
+    let gameID = {};
+    for (let key in grams) {
+      grams[key].forEach( (gram) => gameID[gram.toLowerCase()] = key)
+    }
+    return gameID;
   }
 
   //function to convert our ngram and gameID to proper notation
@@ -97,5 +102,5 @@
     // for every sentence
         //within these nested loops we have two operations that have a worst case of O(n) - removePunctuation and splice
   // this brings our time complexity to O(n^4) (there is a large amount of unrecognized saved time because we traverse words rather than characters)
-
+  // However, a complexity of O(n^4) leads me to believe this is not the most optimal solution :(
   module.exports.gameDetector = gameDetector;
