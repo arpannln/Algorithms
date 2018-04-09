@@ -33,25 +33,32 @@
 //      e.g. {"Call of Duty world war two": "CallOfDutyWW2", }
 //    Iterate through sentences, locating any possible n-gram (this sounds quite expensive)
 //
-// Super naive approach:
+// Approach:
+
 
   function gameDetector (grams, sentences) {
     var gameID = {};
+    // make our reverse hash for quick lookup (tailored to be case insensitive)
     for (let key in grams) {
-      grams[key].forEach( (gram) => gameID[gram] = key)
+      grams[key].forEach( (gram) => gameID[gram.toLowerCase()] = key)
     }
     var result = [];
-    sentences.map ( (sentence) =>
+    // go through our sentences and split them into words and check all the different combinations
+    // for our n-grams
+    sentences.forEach ( (sentence) =>
       {
         var words = sentence.split(" ");
         var changed = "";
         for (let i = 0; i < words.length; i++ ) {
           var phrase = words[i];
           for (let j = i + 1; j < words.length+1; j++) {
-            console.log(phrase);
-            if (gameID[phrase]) {
-              console.log(taggify(gameID[phrase], phrase));
-              words.splice(i, j - i, taggify(gameID[phrase], phrase));
+            //punctuation checker
+            var punctuationCheck = removePunctuation(phrase);
+            var withoutPunctuation = punctuationCheck[0]; // our phrase without punctuation
+            var removed = punctuationCheck[1]; // our punctuation we need to append
+            if (gameID[withoutPunctuation.toLowerCase()]) { //if we find case-insensitive form of ngram
+              //use splice to replace the words in the n-gram with our tagged version
+              words.splice(i, j - i, taggify(gameID[withoutPunctuation.toLowerCase()], withoutPunctuation) + removed);
             }
             phrase += " " + words[j];
           }
@@ -63,8 +70,32 @@
     return result;
   }
 
+  //function to convert our ngram and gameID to proper notation
   function taggify (gameID, ngram) {
     return `TAG{${gameID},${ngram}}`;
   }
+
+  //function to remove punctuation before we check to see if the phrase is in our hash
+  //was refactored to handle consecutive punctuation
+  //send back punctuation so we can append to our sentence after
+  const PUNCTUATION = ".,:;'?!".split("");
+
+  function removePunctuation(phrase) {
+    var punctuation = "";
+    while (PUNCTUATION.indexOf(phrase.slice(-1)) !== -1) {
+      punctuation = phrase.slice(-1) + punctuation;
+      phrase = phrase.slice(0, phrase.length-1);
+    }
+
+    return [phrase, punctuation];
+  }
+
+  //Time complexity discussion:
+  // making our new hash is an operation of n, but this will be largely overshadowed by the following operations
+  // going through each sentence is an operation of n
+    // within this operation we run through every combination of sequential words adding n^2 operations
+    // for every sentence
+        //within these nested loops we have two operations that have a worst case of O(n) - removePunctuation and splice
+  // this brings our time complexity to O(n^4) (there is a large amount of unrecognized saved time because we traverse words rather than characters)
 
   module.exports.gameDetector = gameDetector;
