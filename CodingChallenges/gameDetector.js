@@ -57,7 +57,7 @@
             var withoutPunctuation = punctuationCheck[0]; // our phrase without punctuation
             var removed = punctuationCheck[1]; // our punctuation we need to append
             if (gameID[withoutPunctuation.toLowerCase()]) { //if we find case-insensitive form of ngram
-              //use splice to replace the words in the n-gram with our tagged version
+              //use splice to replace the words in the n-gram with our tagged version so we avoid rechecks
               words.splice(i, j - i, taggify(gameID[withoutPunctuation.toLowerCase()], withoutPunctuation) + removed);
             }
             phrase += " " + words[j];
