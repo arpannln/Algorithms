@@ -36,27 +36,30 @@
 // Approach:
 
 
-  function gameDetector (grams, sentences) {
-    // make our reverse hash for quick lookup (tailored to be case insensitive)
-    var gameID = ngramToGameID(grams);
+  function gameDetectorOriginal (grams, sentences) {
+    // make our reverse hash for quick lookup
+    var gameID1 = ngramToGameID(grams);
     var result = [];
     // go through our sentences and split them into words and check all the different combinations
     // for our n-grams
     sentences.forEach ( (sentence) =>
       {
         var words = sentence.split(" ");
-        var changed = "";
+
         for (let i = 0; i < words.length; i++ ) {
           var phrase = words[i];
+
           for (let j = i + 1; j < words.length+1; j++) {
             //punctuation checker
             var punctuationCheck = removePunctuation(phrase);
             var withoutPunctuation = punctuationCheck[0]; // our phrase without punctuation
             var removed = punctuationCheck[1]; // our punctuation we need to append
-            if (gameID[withoutPunctuation.toLowerCase()]) { //if we find case-insensitive form of ngram
+
+            if (gameID1[withoutPunctuation]) { //if we find  ngram
               //use splice to replace the words in the n-gram with our tagged version so we avoid rechecks
-              words.splice(i, j - i, taggify(gameID[withoutPunctuation.toLowerCase()], withoutPunctuation) + removed);
+              words.splice(i, j - i, taggify(gameID1[withoutPunctuation], withoutPunctuation) + removed);
             }
+
             phrase += " " + words[j];
           }
         }
@@ -66,11 +69,11 @@
     );
     return result;
   }
-
+  // function that hashes our ngrams to our gameIDs to improve efficiency of lookup cost
   function ngramToGameID (grams) {
     let gameID = {};
     for (let key in grams) {
-      grams[key].forEach( (gram) => gameID[gram.toLowerCase()] = key)
+      grams[key].forEach( (gram) => gameID[gram] = key);
     }
     return gameID;
   }
@@ -101,6 +104,53 @@
     // within this operation we run through every combination of sequential words adding n^2 operations
     // for every sentence
         //within these nested loops we have two operations that have a worst case of O(n) - removePunctuation and splice
-  // this brings our time complexity to O(n^4) (there is a large amount of unrecognized saved time because we traverse words rather than characters)
+  // this brings our time complexity to O(n^4), with a space (there is a large amount of unrecognized saved time because we traverse words rather than characters)
   // However, a complexity of O(n^4) leads me to believe this is not the most optimal solution :(
+  // sooo, let's try again
+
+function gameDetector(grams, sentences) {
+    // make our reverse hash for quick lookup
+    var gameID = ngramToGameID(grams);
+
+    //get our keys so we may sort them from largest ngram to smallest. This avoids rechecks
+    var gameIDs = Object.keys(gameID);
+
+    gameIDs = gameIDs.sort( (a, b) => {
+      return b.length - a.length;
+    });
+
+    // combine all our sentences so we eliminate one loop
+    // unique join so we can split later
+    var result = sentences.join("%%%");
+    var copy = result;
+    // go through our sorted ngrams and locate them within our massive string
+    gameIDs.forEach( (gram) => {
+
+      let gramPosition = result.indexOf(gram);
+      // we dont want to retag something that we have already tagged
+      let tagged = result[gramPosition - 1] === '{';
+      // if we find an untagged ngram lets tag it!
+      // I believe I was quite close to cracking it here
+      // basically had a copied string that I would keep morphing so I did not check
+      //  the same position again
+      if (gramPosition > -1 && !tagged) {
+        copy = copy.replace(gram, taggify(gameID[gram], gram));
+        result = result.replace(gram, "");
+      }
+
+    });
+
+    return copy.split("%%%");
+  }
+
+  //Time complexity discussion of enhanced solution
+  //We loop through each gram and find the index of the gram which is an O(n^2) cost total
+  //this is the bulk of our cost and everything else can be pretty much ignored.
+  //However, this solution does not properly identify overlapping n-grams >.<
+  //also note:javaScripts .replace method is very deceptive.
+  //I learned that combining all the sentences leads to various different issues that must be handled
+  //This was forsure fun and challenging though 
+
+
   module.exports.gameDetector = gameDetector;
+  module.exports.gameDetectorOriginal = gameDetectorOriginal;
