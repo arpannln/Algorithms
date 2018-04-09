@@ -91,7 +91,7 @@
   }
 
   //Time complexity discussion:
-  // making our new hash is an operation of n, but this will be largely overshadowed by the following operations
+  // making our new hash  will be largely overshadowed by the following operations
   // going through each sentence is an operation of n
     // within this operation we run through every combination of sequential words adding n^2 operations
     // for every sentence
