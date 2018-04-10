@@ -119,132 +119,63 @@ function gameDetector(grams, sentences) {
       return b.length - a.length;
     });
 
-
     // combine all our sentences so we eliminate one loop
     // unique join argument so we can split later
+    // placeholder hash to record unqiue keys for our grams
     var result = sentences.join("%%%");
     var copy = result.slice(0);
-    var changes = {};
+    var placeholders = {};
 
-    //go through our sorted ngrams and locate them within our string
-
+    //go through our sorted ngrams and replace all instances of our gram with a unique value
     gameIDs.forEach( (gram) => {
-      let gramPosition = copy.indexOf(gram);
-      while(gramPosition > -1) {
-        // let actualPosition = gramPosition + offset;
-        // console.log(Array(12).join("1"));
+      let placeholder = hasher();
+      placeholders[placeholder] = gram;
 
-
-        changes[gramPosition] = gram;
-        // console.log(offset);
-        // offset += (6 + gram.length + gameID[gram].length);
-        let placeholder = Array(gram.length).join("$");
-        // placeholder = "";
-        // console.log(copy);
-        // console.log(gram);
-        // console.log(gramPosition);
-        copy = copy.replace(gram, placeholder);
-        gramPosition = copy.indexOf(gram);
-      }
-
+      copy = copy.replace(new RegExp(gram, "g"), placeholder);
     });
 
-    var positions = Object.keys(changes);
+    //insert taggified ngram into our sentence wherever we find associated placeholder
+    for (placeholder in placeholders) {
+      var gram = placeholders[placeholder];
+      copy = copy.replace(new RegExp(placeholder, "g"), taggify(gameID[gram], gram));
+    };
 
-    positions = positions.sort( (a, b) => {
-      return b - a;
-    });
-
-
-    // var offset = 0;
-    positions.forEach( (position) => {
-      let gram = changes[position];
-      copy = insertWord(copy, position, gram, gameID[gram]);
-      // offset += (6 + gram.length + gameID[gram].length);
-    });
-
-    copy = copy.replace(/\$/g, "");
-
+    //delete those $ bills yo
     return copy.split("%%%");
   }
 
-  //
-  // function gameDetector(grams, sentences) {
-  //     // make our reverse hash for quick lookup
-  //     var gameID = ngramToGameID(grams);
-  //
-  //     //get our keys so we may sort them from largest ngram to smallest. This avoids rechecks
-  //     var gameIDs = Object.keys(gameID);
-  //
-  //     gameIDs = gameIDs.sort( (a, b) => {
-  //       return b.length - a.length;
-  //     });
-  //
-  //
-  //     // combine all our sentences so we eliminate one loop
-  //     // unique join so we can split later
-  //     var result = sentences.join("%%%");
-  //     var copy = result.slice(0);
-  //     var changes = {};
-  //     var previous = null;
-  //     // go through our sorted ngrams and locate them within our massive string
-  //
-  //     gameIDs.forEach( (gram) => {
-  //       let gramPosition = copy.indexOf(gram);
-  //       while(gramPosition > -1) {
-  //         // let actualPosition = gramPosition + offset;
-  //         // console.log(Array(12).join("1"));
-  //         if (previous) {
-  //           if (previous < gramPosition) {
-  //             gramPosition -= previous;
-  //           }
-  //         }
-  //
-  //         changes[gramPosition] = gram;
-  //         // console.log(offset);
-  //         // offset += (6 + gram.length + gameID[gram].length);
-  //         // let placeholder = Array(gram.length).join(" ");
-  //         previous = gramPosition;
-  //         // console.log(copy);
-  //         // console.log(gram);
-  //         // console.log(gramPosition);
-  //         copy = copy.replace(gram, "");
-  //         gramPosition = copy.indexOf(gram);
-  //       }
-  //
-  //     });
-  //
-  //     var positions = Object.keys(changes);
-  //
-  //     positions = positions.sort( (a, b) => {
-  //       return b - a;
-  //     });
-  //
-  //
-  //     // var offset = 0;
-  //     positions.forEach( (position) => {
-  //       let gram = changes[position];
-  //       copy = insertWord(copy, position, gram, gameID[gram]);
-  //       // offset += (6 + gram.length + gameID[gram].length);
-  //     });
-  //
-  //
-  //     return copy.split("%%%");
-  //   }
-  //
-
+  // simply a function to instert taggified ngram in the correct location
   function insertWord (sentence ,index, gram, gameID) {
     var combined = (sentence.slice(0, index) + taggify(gameID, gram) + sentence.slice(index));
     return combined;
   }
 
-  //Time complexity discussion of enhanced solution
-  //We loop through each gram and find the index of the gram which is an O(n^2) cost total
-  //this is the bulk of our cost and everything else can be pretty much ignored.
-  //However, this solution does not properly identify overlapping n-grams >.<
-  //also note:javaScripts .replace method is very deceptive.
-  //I learned that combining all the sentences leads to various different issues that must be handled
-  //This was forsure fun and challenging though
+  const WEIRDOS = 'abcdefghijklmaopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUV123456789'.split("");
+
+  //not really a hashing function but generating a unique key for each phrase
+  //should be relatively unique, can make this even more unique by making it longer
+  //but 8 seems good enough for now
+  function hasher() {
+    var hashed = "";
+    for (let i = 0; i < 8; i++) {
+      hashed += WEIRDOS[Math.floor(Math.random()*WEIRDOS.length)];
+    }
+    return hashed;
+  }
+
+  // boom O(n^2) ( assuming .replace() is O(n) )
+
+
+
+
+// Ok wow this solution is much more code but hey I basically traded space to improve time complexity.
+// The costliest operation is when I loop through all ngrams, and then loop through until I find each instance
+// of each ngram  where I have multiple operations costing O(n). Therefore, I have reduced the time complexity
+//from O(n^4) to O(n^3) while using slightly more space which is definitely a worthy tradeoff.
+// Another optimization would be to associate each gram with it's own unique character string so we
+//dont even have to loop through to find all instances of the same ngram and the respective position
+// in fact I believe this is possible using some hashing function to spit out a unique special character string
+// which would potentially bring the time complexity to O(n^2) in exchange for a little more space.
 
 
   module.exports.gameDetector = gameDetector;
