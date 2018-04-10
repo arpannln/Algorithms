@@ -119,28 +119,125 @@ function gameDetector(grams, sentences) {
       return b.length - a.length;
     });
 
+
     // combine all our sentences so we eliminate one loop
     // unique join so we can split later
     var result = sentences.join("%%%");
-    var copy = result;
+    var copy = result.slice(0);
+    var changes = {};
+    var previous = null;
     // go through our sorted ngrams and locate them within our massive string
-    gameIDs.forEach( (gram) => {
 
-      let gramPosition = result.indexOf(gram);
-      // we dont want to retag something that we have already tagged
-      let tagged = result[gramPosition - 1] === '{';
-      // if we find an untagged ngram lets tag it!
-      // I believe I was quite close to cracking it here
-      // basically had a copied string that I would keep morphing so I did not check
-      //  the same position again
-      if (gramPosition > -1 && !tagged) {
-        copy = copy.replace(gram, taggify(gameID[gram], gram));
-        result = result.replace(gram, "");
+    gameIDs.forEach( (gram) => {
+      let gramPosition = copy.indexOf(gram);
+      while(gramPosition > -1) {
+        // let actualPosition = gramPosition + offset;
+        // console.log(Array(12).join("1"));
+        if (previous) {
+          if (previous < gramPosition) {
+            gramPosition -= previous;
+          }
+        }
+
+        changes[gramPosition] = gram;
+        // console.log(offset);
+        // offset += (6 + gram.length + gameID[gram].length);
+        // let placeholder = Array(gram.length).join(" ");
+        previous = gramPosition;
+        // console.log(copy);
+        // console.log(gram);
+        // console.log(gramPosition);
+        copy = copy.replace(gram, "");
+        gramPosition = copy.indexOf(gram);
       }
 
     });
 
+    var positions = Object.keys(changes);
+
+    positions = positions.sort( (a, b) => {
+      return b - a;
+    });
+
+
+    // var offset = 0;
+    positions.forEach( (position) => {
+      let gram = changes[position];
+      copy = insertWord(copy, position, gram, gameID[gram]);
+      // offset += (6 + gram.length + gameID[gram].length);
+    });
+
+
     return copy.split("%%%");
+  }
+
+  //
+  // function gameDetector(grams, sentences) {
+  //     // make our reverse hash for quick lookup
+  //     var gameID = ngramToGameID(grams);
+  //
+  //     //get our keys so we may sort them from largest ngram to smallest. This avoids rechecks
+  //     var gameIDs = Object.keys(gameID);
+  //
+  //     gameIDs = gameIDs.sort( (a, b) => {
+  //       return b.length - a.length;
+  //     });
+  //
+  //
+  //     // combine all our sentences so we eliminate one loop
+  //     // unique join so we can split later
+  //     var result = sentences.join("%%%");
+  //     var copy = result.slice(0);
+  //     var changes = {};
+  //     var previous = null;
+  //     // go through our sorted ngrams and locate them within our massive string
+  //
+  //     gameIDs.forEach( (gram) => {
+  //       let gramPosition = copy.indexOf(gram);
+  //       while(gramPosition > -1) {
+  //         // let actualPosition = gramPosition + offset;
+  //         // console.log(Array(12).join("1"));
+  //         if (previous) {
+  //           if (previous < gramPosition) {
+  //             gramPosition -= previous;
+  //           }
+  //         }
+  //
+  //         changes[gramPosition] = gram;
+  //         // console.log(offset);
+  //         // offset += (6 + gram.length + gameID[gram].length);
+  //         // let placeholder = Array(gram.length).join(" ");
+  //         previous = gramPosition;
+  //         // console.log(copy);
+  //         // console.log(gram);
+  //         // console.log(gramPosition);
+  //         copy = copy.replace(gram, "");
+  //         gramPosition = copy.indexOf(gram);
+  //       }
+  //
+  //     });
+  //
+  //     var positions = Object.keys(changes);
+  //
+  //     positions = positions.sort( (a, b) => {
+  //       return b - a;
+  //     });
+  //
+  //
+  //     // var offset = 0;
+  //     positions.forEach( (position) => {
+  //       let gram = changes[position];
+  //       copy = insertWord(copy, position, gram, gameID[gram]);
+  //       // offset += (6 + gram.length + gameID[gram].length);
+  //     });
+  //
+  //
+  //     return copy.split("%%%");
+  //   }
+  //
+
+  function insertWord (sentence ,index, gram, gameID) {
+    return (sentence.slice(0, index) + taggify(gameID, gram) + sentence.slice(index));
   }
 
   //Time complexity discussion of enhanced solution
@@ -149,7 +246,7 @@ function gameDetector(grams, sentences) {
   //However, this solution does not properly identify overlapping n-grams >.<
   //also note:javaScripts .replace method is very deceptive.
   //I learned that combining all the sentences leads to various different issues that must be handled
-  //This was forsure fun and challenging though 
+  //This was forsure fun and challenging though
 
 
   module.exports.gameDetector = gameDetector;
