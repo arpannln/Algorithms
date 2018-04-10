@@ -112,7 +112,7 @@ function gameDetector(grams, sentences) {
     // make our reverse hash for quick lookup
     var gameID = ngramToGameID(grams);
 
-    //get our keys so we may sort them from largest ngram to smallest. This avoids rechecks
+    //get our keys so we may sort them from largest ngram to smallest. This avoids nested ngram issue.
     var gameIDs = Object.keys(gameID);
 
     gameIDs = gameIDs.sort( (a, b) => {
@@ -121,33 +121,29 @@ function gameDetector(grams, sentences) {
 
 
     // combine all our sentences so we eliminate one loop
-    // unique join so we can split later
+    // unique join argument so we can split later
     var result = sentences.join("%%%");
     var copy = result.slice(0);
     var changes = {};
-    var previous = null;
-    // go through our sorted ngrams and locate them within our massive string
+
+    //go through our sorted ngrams and locate them within our string
 
     gameIDs.forEach( (gram) => {
       let gramPosition = copy.indexOf(gram);
       while(gramPosition > -1) {
         // let actualPosition = gramPosition + offset;
         // console.log(Array(12).join("1"));
-        if (previous) {
-          if (previous < gramPosition) {
-            gramPosition -= previous;
-          }
-        }
+
 
         changes[gramPosition] = gram;
         // console.log(offset);
         // offset += (6 + gram.length + gameID[gram].length);
-        // let placeholder = Array(gram.length).join(" ");
-        previous = gramPosition;
+        let placeholder = Array(gram.length).join("$");
+        // placeholder = "";
         // console.log(copy);
         // console.log(gram);
         // console.log(gramPosition);
-        copy = copy.replace(gram, "");
+        copy = copy.replace(gram, placeholder);
         gramPosition = copy.indexOf(gram);
       }
 
@@ -167,6 +163,7 @@ function gameDetector(grams, sentences) {
       // offset += (6 + gram.length + gameID[gram].length);
     });
 
+    copy = copy.replace(/\$/g, "");
 
     return copy.split("%%%");
   }
@@ -237,7 +234,8 @@ function gameDetector(grams, sentences) {
   //
 
   function insertWord (sentence ,index, gram, gameID) {
-    return (sentence.slice(0, index) + taggify(gameID, gram) + sentence.slice(index));
+    var combined = (sentence.slice(0, index) + taggify(gameID, gram) + sentence.slice(index));
+    return combined;
   }
 
   //Time complexity discussion of enhanced solution

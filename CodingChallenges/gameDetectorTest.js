@@ -262,12 +262,12 @@ output = ["I used to play a lot of TAG{LeagueOfLegends,League of Legends}, but t
     };
 
   sentences =
-    ["I used to play a lot of League, but then I learned javaScript instead!",
+    ["I used to play a lot of League Of Legends, but then I learned javaScript instead!",
      "I love playing original Clash",
      "I love playing Clash",
      "I do occasionally play Clash because it's on my phone and a much shorter game"];
 
-  output = ["I used to play a lot of TAG{LeagueOfLegends,League}, but then I learned javaScript instead!",
+  output = ["I used to play a lot of TAG{LeagueOfLegends,League Of Legends}, but then I learned javaScript instead!",
     "I love playing TAG{ClashOfClans,original Clash}",
     "I love playing TAG{ClashRoyale,Clash}",
     "I do occasionally play TAG{ClashRoyale,Clash} because it's on my phone and a much shorter game"];
