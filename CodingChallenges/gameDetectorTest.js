@@ -5,97 +5,96 @@ const gameDetector = require('./gameDetector.js').gameDetector;
   // tried to check word by word instead of by character(to have less iterations)
   // but that was causing punctuation issues
   // added a function to remove punctuation
-  // realized that my solution was not case insensitive - made function case insensitive
   // also checked for overlap issues THIS ONE WAS BIG!
+  // must manipulate searching to go from larger ngrams to smaller ngrams to account for this
 
 let grams, sentences, output;
 
-// testing new "improved" code
-grams =
-  {
-  "CallOfDutyWW2": ["Call of duty world war two", "COD WW2", "COD WWII","WW2COD"],
-  "Fortnite": ["Fortnite", "Fort Nite"],
-  "Destiny": ["Destiny", "original Destiny game"],
-  "Destiny2": ["Destiny 2", "the last Destiny game", "Destiny II"],
-  "WorldOfWarcraft": ["WoW the game", "world of warcraft"],
-  };
+  grams =
+    {
+    "CallOfDutyWW2": ["Call of duty world war two", "COD WW2", "COD WWII","WW2COD"],
+    "Fortnite": ["Fortnite", "Fort Nite"],
+    "Destiny": ["Destiny", "original Destiny game"],
+    "Destiny2": ["Destiny 2", "the last Destiny game", "Destiny II"],
+    "WorldOfWarcraft": ["WoW the game", "world of warcraft"],
+    };
 
-sentences =
-  ["I liked the last Destiny game, now I play Fortnite",
-   "Lol, no comment about that",
-   "I'm still playing world of warcraft since ww2"];
+  sentences =
+    ["I liked the last Destiny game, now I play Fortnite",
+     "Lol, no comment about that",
+     "I'm still playing world of warcraft since ww2"];
 
-output = ["I liked TAG{Destiny2,the last Destiny game}, now I play TAG{Fortnite,Fortnite}",
-  "Lol, no comment about that",
-  "I'm still playing TAG{WorldOfWarcraft,world of warcraft} since ww2"];
-
+  output = ["I liked TAG{Destiny2,the last Destiny game}, now I play TAG{Fortnite,Fortnite}",
+    "Lol, no comment about that",
+    "I'm still playing TAG{WorldOfWarcraft,world of warcraft} since ww2"];
 
 
-let i = 0;
-gameDetector(grams, sentences).forEach( (sentence) =>
-  {
-    if (sentence !== output[i]) {
-      throw "Solution Failed Original Test Case";
+
+  let i = 0;
+  gameDetector(grams, sentences).forEach( (sentence) =>
+    {
+      if (sentence !== output[i]) {
+        throw "Solution Failed Original Test Case";
+      }
+      i += 1;
     }
-    i += 1;
-  }
-);
+  );
 
-console.log("Solution Passed Original Test Case");
+  console.log("Solution Passed Original Test Case");
 
 // solves aggressive punctuation issue
 // this test case made me realize I was not handling the case where an n-gram
 // could have multiple punctuation associated
 
-grams =
-  {
-  "CallOfDutyWW2": ["Call of duty world war two", "COD WW2", "COD WWII","WW2COD"],
-  "Fortnite": ["Fortnite", "Fort Nite"],
-  "Destiny": ["Destiny", "original Destiny game"],
-  "Destiny2": ["Destiny 2", "the last Destiny game", "Destiny II"],
-  "WorldOfWarcraft": ["WoW the game", "world of warcraft"],
-  };
+  grams =
+    {
+    "CallOfDutyWW2": ["Call of duty world war two", "COD WW2", "COD WWII","WW2COD"],
+    "Fortnite": ["Fortnite", "Fort Nite"],
+    "Destiny": ["Destiny", "original Destiny game"],
+    "Destiny2": ["Destiny 2", "the last Destiny game", "Destiny II"],
+    "WorldOfWarcraft": ["WoW the game", "world of warcraft"],
+    };
 
-sentences =
-  ["I liked the last Destiny game!!!!, now I play Fortnite",
-   "Lol, no comment about that",
-   "I'm still playing world of warcraft since ww2???"];
+  sentences =
+    ["I liked the last Destiny game!!!!, now I play Fortnite",
+     "Lol, no comment about that",
+     "I'm still playing world of warcraft since ww2???"];
 
-output = ["I liked TAG{Destiny2,the last Destiny game}!!!!, now I play TAG{Fortnite,Fortnite}",
-  "Lol, no comment about that",
-  "I'm still playing TAG{WorldOfWarcraft,world of warcraft} since ww2???"];
+  output = ["I liked TAG{Destiny2,the last Destiny game}!!!!, now I play TAG{Fortnite,Fortnite}",
+    "Lol, no comment about that",
+    "I'm still playing TAG{WorldOfWarcraft,world of warcraft} since ww2???"];
 
 
 
-i = 0;
-gameDetector(grams, sentences).forEach( (sentence) =>
-  {
-    if (sentence !== output[i]) {
-      throw "Solution Failed Punctuation Test Case";
+  i = 0;
+  gameDetector(grams, sentences).forEach( (sentence) =>
+    {
+      if (sentence !== output[i]) {
+        throw "Solution Failed Punctuation Test Case";
+      }
+      i += 1;
     }
-    i += 1;
-  }
-);
+  );
 
-console.log("Solution Passed Punctuation Test Case");
+  console.log("Solution Passed Punctuation Test Case");
 
 // maybe you did not want to handle case insensitive issue, but added it anyways
 // I decided that I wanted the implementation to be case sensitive because LOL can refer to League Of Legends while lol
 // should not trigger this
-grams =
-  {
-  "LeagueOfLegends": ["League of Legends", "League", "LOL"],
-  "ClashRoyale": ["Clash Royale", "Clash"],
-  };
+  grams =
+    {
+    "LeagueOfLegends": ["League of Legends", "League", "LOL"],
+    "ClashRoyale": ["Clash Royale", "Clash"],
+    };
 
-sentences =
-  ["I used to play a lot of League of Legends, but then I learned javaScript instead!",
-   "Lol, no comment about that",
-   "I do occasionally play Clash because it's on my phone and a much shorter game"];
+  sentences =
+    ["I used to play a lot of League of Legends, but then I learned javaScript instead!",
+     "Lol, no comment about that",
+     "I do occasionally play Clash because it's on my phone and a much shorter game"];
 
-output = ["I used to play a lot of TAG{LeagueOfLegends,League of Legends}, but then I learned javaScript instead!",
-  "Lol, no comment about that",
-  "I do occasionally play TAG{ClashRoyale,Clash} because it's on my phone and a much shorter game"];
+  output = ["I used to play a lot of TAG{LeagueOfLegends,League of Legends}, but then I learned javaScript instead!",
+    "Lol, no comment about that",
+    "I do occasionally play TAG{ClashRoyale,Clash} because it's on my phone and a much shorter game"];
 
   i = 0;
   gameDetector(grams, sentences).forEach( (sentence) =>

@@ -55,7 +55,7 @@ function gameDetector(grams, sentences) {
     var copy = result.slice(0);
     var placeholders = {};
 
-    //go through our sorted ngrams and replace all instances of our gram with a unique value
+    //go through our sorted ngrams and replace all instances of our ngram with a unique value
     gameIDs.forEach( (gram) => {
       let placeholder = hasher();
       placeholders[placeholder] = gram;
@@ -89,7 +89,7 @@ function gameDetector(grams, sentences) {
     return `TAG{${gameID},${ngram}}`;
   }
 
-  // simply a function to instert taggified ngram in the correct location
+  //function to instert taggified ngram in the correct location
   function insertWord (sentence ,index, gram, gameID) {
     var combined = (sentence.slice(0, index) + taggify(gameID, gram) + sentence.slice(index));
     return combined;
@@ -108,6 +108,8 @@ function gameDetector(grams, sentences) {
     return hashed;
   }
 
-  // boom O(n^2) ( assuming .replace() is O(n) )
+  //After many modifications I have managed to split tasks effeciently to a point where
+  //my most expensive operation is at worst case O(n^2). There are multiple operations of this
+  //time complexity but since they are not nested, but rather seperate, the constant can be dropped.
 
   module.exports.gameDetector = gameDetector;
