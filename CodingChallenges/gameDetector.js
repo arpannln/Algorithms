@@ -111,5 +111,5 @@ function gameDetector(grams, sentences) {
   //After many modifications I have managed to split tasks effeciently to a point where
   //my most expensive operation is at worst case O(n^2). There are multiple operations of this
   //time complexity but since they are not nested, but rather seperate, the constant can be dropped.
-
+  //feels bad man 
   module.exports.gameDetector = gameDetector;
