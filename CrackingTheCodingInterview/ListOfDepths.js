@@ -35,3 +35,22 @@ function createLists(head) {
   }
 
 }
+
+function isValidBST(head) {
+  if (head === null) return;
+  if (head.left) {
+    if (head.left.value > head.value) {
+      return false;
+    }
+    return isValidBST(head.left);
+  }
+  if (head.right) {
+    if (head.right.value <= head.value) {
+      return false;
+    }
+    return isValidBST(head.right);
+  }
+
+
+  return true;
+}
