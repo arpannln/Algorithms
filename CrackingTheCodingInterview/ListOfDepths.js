@@ -28,9 +28,10 @@ function createLists(head) {
   if (head === null) return null;
 
   var stack = [head];
+  var lists = [];
 
   while (stack.length !== 0) {
-    
+
   }
 
 }
