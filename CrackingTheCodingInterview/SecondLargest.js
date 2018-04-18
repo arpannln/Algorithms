@@ -58,20 +58,24 @@ console.log(secondLargest(node4)); //should return 6.5
 
 const secondLargestBetter = (head) => {
   var c = 0;
-
+  var curr = head;
   const findSecondLargest = (node) => {
-    if (root === null || c >= 2) return;
+    if (node === null || c >= 2) return;
 
     findSecondLargest(node.right);
-
+    
     c++;
 
     if (c === 2) {
-      return node.value;
+      curr = node;
+      return;
     }
 
     findSecondLargest(node.left);
   };
 
-  return findSecondLargest(head);
+  findSecondLargest(head);
+  return curr.value;
 };
+
+console.log(secondLargestBetter(node4));
