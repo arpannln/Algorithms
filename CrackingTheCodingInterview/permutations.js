@@ -40,7 +40,6 @@ const subsetter = (inputArr) => {
         for (let i = 0; i < arr.length; i++) {
           var curr = arr.slice();
           curr.splice(i, 1);
-
           subset(curr.slice());
         }
     }
