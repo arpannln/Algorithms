@@ -29,7 +29,7 @@ var node6 = new Node(6, node5, node7);
 var node4 = new Node(4, node2, node6);
 
 const secondLargest = (head) => {
-  if (head.right === null) return false;
+  if (head.right === null && head.left === null) return false;
 
   var parent = head;
   var curr = head.right;
@@ -54,3 +54,24 @@ const secondLargest = (head) => {
 };
 
 console.log(secondLargest(node4)); //should return 6.5
+
+
+const secondLargestBetter = (head) => {
+  var c = 0;
+
+  const findSecondLargest = (node) => {
+    if (root === null || c >= 2) return;
+
+    findSecondLargest(node.right);
+
+    c++;
+
+    if (c === 2) {
+      return node.value;
+    }
+
+    findSecondLargest(node.left);
+  };
+
+  return findSecondLargest(head);
+};
