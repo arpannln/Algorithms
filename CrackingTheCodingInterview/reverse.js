@@ -8,3 +8,17 @@ var link4 = new Link(1, link5);
 var link3 = new Link(1, link4);
 var link2 = new Link(1, link3);
 var link1 = new Link(1, link2);
+
+
+const reverse = (head) => {
+  if (head === null || head.next === null) {
+    return null;
+  }
+
+  let runner = head.next;
+  head.next = null;
+
+  while (head.next !== null) {
+    
+  }
+};
