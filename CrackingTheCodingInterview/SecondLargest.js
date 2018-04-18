@@ -16,10 +16,12 @@ class Node {
   }
 }
 
+var nodeCheck = new Node(6.5, null, null);
+
 var node1 = new Node(1, null, null);
 var node3 = new Node(3, null, null);
 var node5 = new Node(5, null, null);
-var node7 = new Node(7, null, null);
+var node7 = new Node(7, nodeCheck, null);
 
 var node2 = new Node(2, node1, node3);
 var node6 = new Node(6, node5, node7);
@@ -41,13 +43,14 @@ const secondLargest = (head) => {
 
   var first = largest(curr);
 
-  if (first.left === null)
-    return parent;
+  if (first.left === null) {
+    return parent.value;
+  }
   else {
-    return largest(first.left);
+    return largest(first.left).value;
   }
 
 
 };
 
-console.log(secondLargest(node4));
+console.log(secondLargest(node4)); //should return 6.5
