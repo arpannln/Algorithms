@@ -16,11 +16,17 @@ var node6 = new Node(6, node5, node7);
 
 var node4 = new Node(4, node2, node6);
 
+
+// BST
+//      4
+//   2    6
+// 1  3  5  7
+
 const findCommonAncestor = (head, A, B) => {
   //one approach I could put all children of every element in the hash and then
   //traverse backwards until I find where both elements are included
   // this is shit come up with something
 
   // if it is a BST
-  // do in order traversal pick first node that falls between the two 
+  // do in order traversal pick first node that falls between the two
 };
