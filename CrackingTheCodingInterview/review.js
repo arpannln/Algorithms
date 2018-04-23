@@ -7,8 +7,8 @@ const permutator = (input) => {
     } else {
       for (let i = 0; i < arr.length; i++) {
         var curr = arr.slice();
-        m.push(curr.splice(i, 1));
-        permute(curr.slice(), m);
+        var next = curr.splice(i, 1);
+        permute(curr.slice(), m.concat(next));
       }
     }
   };
