@@ -22,7 +22,23 @@ console.log(permutator([1, 2, 3]));
 
 
 const subsetter = (input) => {
-  
+  var result = [];
+
+  const subset = (arr, i) => {
+    if (i === arr.length) {
+      result.push(arr);
+    } else {
+      let withEl = arr.slice();
+      subset(withEl.slice(), i+1);
+      let without = arr.slice();
+      withEl.splice(i, 1);
+      subset(withEl.slice(), i);
+    }
+  };
+
+  subset(input, 0);
+
+  return result;
 };
 
 console.log(subsetter([1, 2, 3]));
