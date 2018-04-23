@@ -23,7 +23,8 @@ console.log(permutator([1, 2, 3]));
 
 const subsetter = (input) => {
   var result = [];
-
+  //basically recursively decide whether to include the current element or not
+  //2^n operations
   const subset = (arr, i) => {
     if (i === arr.length) {
       result.push(arr);
