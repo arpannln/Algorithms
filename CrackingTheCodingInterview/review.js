@@ -19,3 +19,24 @@ const permutator = (input) => {
 };
 
 console.log(permutator([1, 2, 3]));
+
+
+const subsetter = (input) => {
+  var result = [[]];
+
+
+  const subset = (arr, m = []) => {
+      if (!result.includes(arr)) {
+        result.push(arr);
+      }
+      for (let  i = 0; i < arr.length; i++) {
+        var curr = arr.slice();
+        curr.splice(i, 1);
+        subset(curr.slice());
+      }
+  };
+
+  return result;
+};
+
+console.log(subsetter([1, 2, 3]));
