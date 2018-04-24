@@ -4,7 +4,7 @@
 //
 // Note:
 // Try to come up as many solutions as you can, there are at least 3 different ways to solve this problem.
-// 
+//
 // [show hint]
 //
 // Hint:
@@ -14,3 +14,18 @@
 //
 // Credits:
 // Special thanks to @Freezen for adding this problem and creating all test cases.
+
+//
+// var rotate = function(nums, k) {
+//     for (let i = 0; i < k; i++) {
+//         nums.unshift(nums.pop());
+//     }
+// };
+
+//shit solution
+// damn look at how sexy this one looks 
+
+var rotate = function(nums, k) {
+   let right = nums.splice(0, k + 1);
+   nums.splice(k+1, 0, ...right);
+};
