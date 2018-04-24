@@ -35,6 +35,14 @@ const addTwoNumbers = (l1, l2) => {
     result.push(sum % 10);
   }
 
+  //if we reach the end of our list and we still have some carryOver.. need to account for that
+
+  if (carryOver === 1) {
+    result.push(1);
+  }
+
+  //let's create reverse list now
+
   var head = new ListNode(result[0]);
   var current = head;
   for (let i = 0; i < result.length - 1; i++) {
