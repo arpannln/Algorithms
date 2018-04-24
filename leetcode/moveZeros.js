@@ -9,9 +9,7 @@
 const moveArraysToBack = (arr) => {
   let end = arr.length - 1;
   //check if there are zeros hiding in the back
-  while (arr[end] === 0) {
-    end--;
-  }
+
 
   if (end === 0) {return arr;}
 
@@ -19,8 +17,10 @@ const moveArraysToBack = (arr) => {
   while (runner < end) {
     if (arr[end] === 0) {
       end--;
+      if (end === 0) {return arr;}
       continue;
     }
+
     if (arr[runner] === 0) {
       [arr[runner], arr[end]] = [arr[end], arr[runner]];
       end--;
