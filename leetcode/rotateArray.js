@@ -23,9 +23,11 @@
 // };
 
 //shit solution
-// damn look at how sexy this one looks 
+// damn look at how sexy this one looks
+
+// REMEMBER ... CAN BE USED TO SEPERATE AN ARRAY!!!!
 
 var rotate = function(nums, k) {
-   let right = nums.splice(0, k + 1);
-   nums.splice(k+1, 0, ...right);
+   const rotated = nums.splice((nums.length-k), k);
+   nums.unshift(...rotated);
 };
