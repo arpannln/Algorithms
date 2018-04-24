@@ -31,7 +31,6 @@ const subsetter = (input) => {
     } else {
       let withEl = arr.slice();
       subset(withEl.slice(), i+1);
-      let without = arr.slice();
       withEl.splice(i, 1);
       subset(withEl.slice(), i);
     }
