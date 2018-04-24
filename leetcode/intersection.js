@@ -10,3 +10,32 @@
 // What if the given array is already sorted? How would you optimize your algorithm?
 // What if nums1's size is small compared to nums2's size? Which algorithm is better?
 // What if elements of nums2 are stored on disk, and the memory is limited such that you cannot load all elements into the memory at once?
+// initial solution
+
+/**
+ * @param {number[]} nums1
+ * @param {number[]} nums2
+ * @return {number[]}
+ */
+var intersect = function(nums1, nums2) {
+    var counter = {};
+    var result = [];
+
+
+    for (let i = 0; i < nums1.length; i++) {
+        if (counter[nums1[i]]) {
+            counter[nums1[i]] += 1;
+        } else {
+            counter[nums1[i]] = 1;
+        }
+    }
+
+    for (let i = 0; i < nums2.length; i++) {
+        if (counter[nums2[i]] > 0) {
+            result.push(nums2[i]);
+            counter[nums2[i]] -= 1;
+        }
+    }
+
+    return result;
+};
