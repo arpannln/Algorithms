@@ -1,24 +1,18 @@
 var lengthOfLongestSubstring = function(s) {
-    var longest = "";
+    var longest = 0;
     var seen = {};
-    var temp = "";
+    let i = 0;
 
-    for (var i = 0; i < s.length; i++) {
-        if (seen[s[i]]) {
-            if (temp.length > longest.length) longest = temp;
-            temp.splice(temp.indexOf(s[i]), 1);
-            console.log(temp);
-            seen = {};
-            seen[s[i]] = true;
-        } else {
-            temp += s[i];
-
-            seen[s[i]] = true;
-            if (temp.length > longest.length && i === s.length - 1) longest = temp;
-        }
+    for(let j = 0; j < s.length; j++) {
+      while(seen[s.indexOf(j)]) {
+        seen[s.indexOf(i)] = false;
+        i++;
+      }
+      seen[s.indexOf(j)] = true;
+      longest = Math.max(longest, j - i + 1);
     }
 
-    return longest.length;
+    return longest;
 };
 // FUCK ME MAN
 console.log(lengthOfLongestSubstring("dvdf"));
