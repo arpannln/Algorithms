@@ -15,6 +15,31 @@ var lengthOfLongestSubstring = function(s) {
     return longest;
 };
 // FUCK ME MAN
+
+var lengthOfLongestSubstring = function(s) {
+  if (s === null) {
+    return 0;
+  }
+  if (s.length <= 1) {
+    return s.length;
+  }
+
+  let longest = 1;
+  let i = 0;
+  let j = 1;
+
+  while (j < s.length) {
+    if (s.slice(i, j).indexOf(s[j]) >= 0) {
+      i += s.slice(i, j).indexOf(s[j]) + 1;
+    } else {
+      longest = Math.max(j - i + 1, longest);
+    }
+
+    j++;
+  }
+
+  return longest;
+};
 console.log(lengthOfLongestSubstring("dvdf"));
 
 // CHECK IF THE FIRST ELEMENT WAS THE ONE WE SAW AGAIN IF SO
