@@ -9,3 +9,48 @@
 //
 // Input: "cbbddadddda"
 // Output: "bb"
+
+// ok so for every point we want to check odd palindromes as well as even
+
+
+const longestPalindromeSubstring = (s) => {
+  let longest = 1;
+  let start, last;
+
+  //lets go through even solutions
+  for (let i = 1; i < s.length; i++) {
+    start = i - 1;
+    last = i;
+
+    for (let j = 0; j < s.length - i; j++) {
+      if (s.charAt(start) === s.charAt(last)) {
+        longest = Math.max(longest, last - start + 1);
+      } else {
+        break;
+      }
+
+      start++;
+      last--;
+    }
+  }
+
+  // odd solutions
+
+  for (let i = 1; i < s.length; i++) {
+    start = i - 1;
+    last = i + 1;
+
+    for (let j = 0; j < s.length - i; j++) {
+      if (s.charAt(start) === s.charAt(last)) {
+        longest = Math.max(longest, last - start + 1);
+      } else {
+        break;
+      }
+
+    start++;
+    last--;
+    }
+  }
+
+  return longest;
+};
