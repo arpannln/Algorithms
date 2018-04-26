@@ -14,7 +14,7 @@
 
 
 const longestPalindromeSubstring = (s) => {
-  let longest = 1;
+  let longest = s.charAt(0);
   let start, last;
 
   //lets go through even solutions
@@ -24,7 +24,8 @@ const longestPalindromeSubstring = (s) => {
 
     for (let j = 0; j < s.length - i; j++) {
       if (s.charAt(start) === s.charAt(last)) {
-        longest = Math.max(longest, last - start + 1);
+        let word = s.slice(start, last + 1);
+        if (word.length > longest.length) longest = word;
       } else {
         break;
       }
@@ -42,7 +43,8 @@ const longestPalindromeSubstring = (s) => {
 
     for (let j = 0; j < s.length - i; j++) {
       if (s.charAt(start) === s.charAt(last)) {
-        longest = Math.max(longest, last - start + 1);
+        let word = s.slice(start, last + 1);
+        if (word.length > longest.length) longest = word;
       } else {
         break;
       }
