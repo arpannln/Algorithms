@@ -19,7 +19,7 @@ const makeBetterChange = (inputArr, target) => {
     }
     //we want to fork into 2 here, one where we include the last element
     if (targ - arr[arr.length - 1] >= 0) {
-      makeChange(arr.slice(), targ - arr[arr.length - 1], accum.concat([arr[arr.length - 1]]) );
+      makeChange(arr.slice(0), targ - arr[arr.length - 1], accum.concat([arr[arr.length - 1]]) );
     } else {
       makeChange(arr.slice(0, arr.length - 1), targ, accum);
     }
