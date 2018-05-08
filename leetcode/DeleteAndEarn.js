@@ -21,3 +21,29 @@
 //
 // The length of nums is at most 20000.
 // Each element nums[i] is an integer in the range [1, 10000].
+
+var deleteAndEarn = function(nums) {
+    let max = Math.max(...nums);
+    let counter = new Array(max + 1);
+    counter.fill(0);
+
+
+    for (let i = 0; i < nums.length; i++) {
+        counter[nums[i]] += 1;
+    }
+    
+    let odd = 0;
+    let even = 0;
+
+    for (let i = 0; i < counter.length; i++) {
+        if ( i % 2 === 0 ) {
+            even += counter[i] * i;
+        } else {
+            odd += counter[i] * i;
+        }
+    }
+
+    return odd > even ? odd : even;
+
+
+};
