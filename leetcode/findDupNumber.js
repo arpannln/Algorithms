@@ -7,3 +7,12 @@
 // There is only one duplicate number in the array, but it could be repeated more than once.
 // Credits:
 // Special thanks to @jianchao.li.fighter for adding this problem and creating all test cases.
+// nlogn approach?
+const findDup = (inputArr) => {
+  //sum up all the elements
+  let sum = 0;
+  let expectedSum = 
+  for (let i = 0; i < inputArr.length; i++) {
+
+  }
+};
