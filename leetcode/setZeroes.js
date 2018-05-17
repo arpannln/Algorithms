@@ -33,3 +33,26 @@
 // A straight forward solution using O(mn) space is probably a bad idea.
 // A simple improvement uses O(m + n) space, but still not the best solution.
 // Could you devise a constant space solution?
+
+//naive solution
+var setZeroes = function(matrix) {
+    let seenI = {};
+    let seenJ = {};
+
+    for (let i = 0; i < matrix.length; i++) {
+        for (let j = 0; j < matrix[i].length; j++) {
+            if (matrix[i][j] === 0) {
+                seenI[i] = true;
+                seenJ[j] = true;
+            }
+        }
+    }
+
+    for (let i = 0; i < matrix.length; i++) {
+        for (let j = 0; j < matrix[i].length; j++) {
+            if (seenI[i] || seenJ[j]) {
+                matrix[i][j] = 0;
+            }
+        }
+    }
+};

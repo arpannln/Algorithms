@@ -15,6 +15,7 @@ var findDuplicate = function(nums) {
     //total sum has to be like median * 2n
     let min = Math.min(...nums);
     let max = Math.max(...nums);
+    //
     let totalExpectedSum;
 
     if (nums.length % 2 === 0) {
