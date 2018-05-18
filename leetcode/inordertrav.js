@@ -17,3 +17,13 @@ wow
  */
 
  //inorder -> left, yourself, then right;
+
+
+const recursiveInOrder = (root) => {
+  if (root === null) return;
+
+  recursiveInOrder(root.left);
+  console.log(root.value);
+  recursiveInOrder(root.right);
+
+};
