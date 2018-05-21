@@ -7,5 +7,25 @@
 // * @return {number[][]}
 // */
 var threeSum = function(nums) {
+    let result = [];
 
+    for (let i = 0; i < nums.length; i++) {
+       let current = nums[i];
+
+
+    }
+};
+
+var twoSum = function(nums, external, target) {
+    let result = [];
+    let future = {};
+
+    for (let i = 0; i < nums.length; i++) {
+        let current = nums[i];
+        if (future[target - current]) {
+            result.concat([current, target - current]);
+        } else {
+            future[current] = true;
+        }
+    }
 };
