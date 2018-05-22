@@ -41,3 +41,42 @@ console.log(threeSum([-1, 0, 1, 2, -1, -4]));
 //try sorting maybe
 
 // shortly later realized that indexOf does not work with nested arrays thats hella dumb...
+//tried this where we delete the dups after we find solutions but this breaks for all 0's -.-
+var threeSum = function(nums) {
+    let result = [];
+
+    for (let i = 0; i < nums.length; i++) {
+       let current = nums[i];
+       nums.splice(i, 1);
+       let results = twoSum(nums, -current);
+       console.log(result);
+       if (!result.includes(results) && results.length !== 0) {
+           result = result.concat(results);
+       }
+
+       //delete dups after
+       let dupIndex = nums.indexOf(current);
+       while (dupIndex > -1) {
+           nums.splice(dupIndex, 1);
+           dupIndex = nums.indexOf(current);
+       }
+    }
+
+    return result;
+};
+
+var twoSum = function(nums, target) {
+    let result = [];
+    let future = {};
+    console.log(nums);
+    for (let i = 0; i < nums.length; i++) {
+        let current = nums[i];
+        console.log(current);
+        if (future[current]) {
+            result.push([current, target - current, -target].sort());
+        } else {
+            future[target - current] = true;
+        }
+    }
+    return result;
+};
