@@ -22,18 +22,22 @@ var threeSum = function(nums) {
 var twoSum = function(nums, target) {
     let result = [];
     let future = {};
-    console.log(nums);
+
     for (let i = 0; i < nums.length; i++) {
         let current = nums[i];
-        console.log(current);
         if (future[current]) {
             result.push([current, target - current, -target]);
         } else {
             future[target - current] = true;
         }
     }
-    console.log(result);
+
     return result;
 };
 
 console.log(threeSum([-1, 0, 1, 2, -1, -4]));
+
+//so the above solution returns hella combos, unlucky
+//try sorting maybe
+
+// shortly later realized that indexOf does not work with nested arrays thats hella dumb...
