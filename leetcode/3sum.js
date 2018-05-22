@@ -11,21 +11,29 @@ var threeSum = function(nums) {
 
     for (let i = 0; i < nums.length; i++) {
        let current = nums[i];
-
-
+       let copy = nums.slice();
+       copy.splice(i, 1);
+       result.push(twoSum(copy, -current));
     }
+
+    return result;
 };
 
-var twoSum = function(nums, external, target) {
+var twoSum = function(nums, target) {
     let result = [];
     let future = {};
-
+    console.log(nums);
     for (let i = 0; i < nums.length; i++) {
         let current = nums[i];
-        if (future[target - current]) {
-            result.concat([current, target - current]);
+        console.log(current);
+        if (future[current]) {
+            result.push([current, target - current, -target]);
         } else {
-            future[current] = true;
+            future[target - current] = true;
         }
     }
+    console.log(result);
+    return result;
 };
+
+console.log(threeSum([-1, 0, 1, 2, -1, -4]));
