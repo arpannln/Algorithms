@@ -5,10 +5,27 @@
 // Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?
 //
 // Example 1:
-// 
+//
 // Input: [2,2,1]
 // Output: 1
 // Example 2:
 //
 // Input: [4,1,2,1,2]
 // Output: 4
+
+
+//jesus I am an idiot and already did this one
+
+const singleNumber = function(nums) {
+    let length = nums.length;
+
+    if(length < 2) return nums[0];
+
+    let result = 0;
+
+    for(let i = 0; i < length; i++) {
+        result ^= nums[i];
+    }
+
+    return result;
+};
