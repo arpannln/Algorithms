@@ -42,3 +42,27 @@ const subsetter = (input) => {
 };
 
 console.log(subsetter([1, 2, 3]));
+//
+var inorderTraversal = function(root) {
+    let result = [];
+    let current = root;
+
+    let stack = [];
+    let done = false;
+
+    while (!done) {
+       if(current !== null) {
+           stack.push(current);
+           current = current.left;
+       } else if (stack.length > 0) {
+           current = stack.pop();
+           result.push(current.val);
+           current = current.right;
+       }
+       else {
+           done = true;
+       }
+    }
+
+    return result;
+};
