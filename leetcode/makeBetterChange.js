@@ -3,7 +3,7 @@
 // start from the end
 
 const makeBetterChange = (inputArr, target) => {
-  let result = [[]];
+  let result = [];
 
   const makeChange = (arr, targ, accum = []) => {
     if (targ === 0) {
@@ -27,7 +27,7 @@ const makeBetterChange = (inputArr, target) => {
 
   makeChange(inputArr, target);
 
-  return result.sort();
+  return result.sort((a, b) => b.length < a.length)[0];
 };
 
 console.log(makeBetterChange([17, 5, 8, 12, 30], 30));
