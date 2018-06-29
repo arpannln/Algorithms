@@ -29,7 +29,7 @@ const makeBetterChange = (inputArr, target) => {
 
   makeChange(inputArr, target);
 
-  return result.sort()[0];
+  return result.sort();
 };
 
-console.log(makeBetterChange([1, 5, 8, 12, 17], 30));
+console.log(makeBetterChange([17, 5, 8, 12, 1], 30));
