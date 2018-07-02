@@ -13,3 +13,5 @@
 //   [20,9],
 //   [15,7]
 // ]
+
+//game plan: depth traversal, lol crazy plan, just reverse every other array after depth first search
