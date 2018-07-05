@@ -13,3 +13,38 @@
 //
 // Could you do this in one pass?
 //
+var removeNthFromEnd = function(head, n) {
+    if (head.next === null) {
+        return null;
+    }
+
+
+    let runner = head;
+    let current = head;
+
+
+    for (let i = 0; i < n + 1; i++) {
+      //they want the very first element deleted
+        if (runner === null) {
+            return head.next;
+        }
+        runner = runner.next;
+    }
+
+
+    while (runner !== null) {
+        current = current.next;
+        runner = runner.next;
+    }
+
+
+    if (current.next) {
+        current.next = current.next.next;
+    } else {
+        current.next = null;
+    }
+
+
+
+    return head;
+};
