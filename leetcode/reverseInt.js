@@ -17,3 +17,5 @@ var reverse = function(x) {
         return reversedNum * negative;
     }
 };
+
+// we can do better 
