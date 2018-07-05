@@ -37,3 +37,16 @@
 // | 2013-10-02 |       0.00        |
 // | 2013-10-03 |       0.50        |
 // +------------+-------------------+
+
+
+SELECT
+    Request_at AS Day,
+    ROUND(COUNT(CASE WHEN Trips.Status IN ("cancelled_by_driver", "cancelled_by_client") THEN 1 ELSE null END)/COUNT(*), 2) AS "Cancellation Rate"
+FROM
+    Trips
+JOIN
+    Users on Trips.Driver_Id = Users.Users_Id
+WHERE
+    Users.Banned = "No" AND Trips.Request_at IN ("2013-10-01", "2013-10-02", "2013-10-03")
+GROUP BY
+    Trips.Request_at
