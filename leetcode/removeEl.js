@@ -3,7 +3,7 @@
 // Do not allocate extra space for another array, you must do this by modifying the input array in-place with O(1) extra memory.
 //
 // The order of elements can be changed. It doesn't matter what you leave beyond the new length.
-// 
+//
 // Example 1:
 //
 // Given nums = [3,2,2,3], val = 3,
@@ -36,3 +36,13 @@
 // for (int i = 0; i < len; i++) {
 //     print(nums[i]);
 // }
+
+
+var removeElement = function(nums, val) {
+    for (let i = 0; i < nums.length; i++) {
+        if (nums[i] === val) {
+            nums.splice(i, 1);
+            i--;
+        }
+    }
+};
