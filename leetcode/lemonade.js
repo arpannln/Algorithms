@@ -5,7 +5,7 @@
 // Each customer will only buy one lemonade and pay with either a $5, $10, or $20 bill.  You must provide the correct change to each customer, so that the net transaction is that the customer pays $5.
 //
 // Note that you don't have any change in hand at first.
-// 
+//
 // Return true if and only if you can provide every customer with correct change.
 //
 //
@@ -36,3 +36,32 @@
 // For the next two customers in order, we collect a $10 bill and give back a $5 bill.
 // For the last customer, we can't give change of $15 back because we only have two $10 bills.
 // Since not every customer received correct change, the answer is false.
+
+
+var lemonadeChange = function(bills) {
+    let change = {5: 0, 10: 0, 20: 0};
+    console.log(change);
+    //have to keep track of bill type
+    for (let i = 0; i < bills.length; i++) {
+        let bill = bills[i];
+        change[bill] += 1;
+        if (bill === 10) {
+           if (change[5] > 0) {
+               change[5] -= 1;
+           } else {
+               return false;
+           }
+        } else if (bill === 20) {
+           if (change[10] > 0 && change[5] > 0) {
+               change[10] -= 1;
+               change[5] -= 1;
+           } else if (change[5] >= 3) {
+               change[5] -= 3;
+           } else {
+               return false;
+           }
+        }
+    }
+
+    return true;
+};
