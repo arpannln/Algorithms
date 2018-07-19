@@ -3,7 +3,6 @@
 
 const brothersBond = (arr) => {
   let count = 0;
-
   for (let i = 0; i < arr.length - 2; i++) {
       if (arr[i] === arr[i + 1] && arr[i + 1] === arr[i + 2]) {
         count++;
@@ -14,4 +13,8 @@ const brothersBond = (arr) => {
         }
       }
   }
+
+  return count;
 };
+
+console.log(brothersBond([1, 1, 2, 2, 3, 3, 3, 2, 1, 1 ]));
