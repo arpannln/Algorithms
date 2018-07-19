@@ -5,7 +5,9 @@ var deviceType = 'Hub';
         prop: {
             deviceType: 'Router',
             getDeviceType: function() {
+                console.log(this.deviceType);
                 return this.deviceType;
+
             }
         }
         };
